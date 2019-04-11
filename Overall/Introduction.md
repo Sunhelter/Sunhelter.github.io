@@ -61,7 +61,7 @@ ABP使用最新的**ASP.NET Core**和**EF Core**，也支持ASP.NET MVC 5.x与EF
 #### 开始模板
 
 从开始模板直接创建一个现代化的启动项目。
-![开始模板](./img/Overall/module-zero-core-template-ui-home.png)
+![开始模板](/img/Overall/module-zero-core-template-ui-home.png)
 
 开始模板为应用提供了一个基础页面和一些常用功能。这里有一些开始模板以供选择。
 

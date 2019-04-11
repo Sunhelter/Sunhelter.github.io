@@ -1,4 +1,4 @@
-### Introduction
+### 介绍
 
 The layering of an application's codebase is a widely accepted technique to
 help reduce complexity and to improve code reusability. To achieve a layered
