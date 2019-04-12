@@ -1,4 +1,6 @@
-﻿### 介绍
+﻿## 模块系统
+
+### 介绍
 
 ABP提供了构建模块的基础结构，并将它们组合在一起以创建应用程序。模块可以依赖于另一个模块。程序集通常被视为模块。如果创建具有多个程序集的应用程序，则建议为每个程序集创建一个模块定义。
 
@@ -17,7 +19,7 @@ ABP提供了构建模块的基础结构，并将它们组合在一起以创建�
         }
     }
 ```
-如果需要，模块定义类负责通过[依赖注入](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)来注册它（它可以按常规方式完成，如上所示）。它还可以配置应用程序和其他模块，为应用程序添加新功能，等等......
+如果需要，模块定义类负责通过[依赖注入](/Common.Structures/Dependency-Injection)来注册它（它可以按常规方式完成，如上所示）。它还可以配置应用程序和其他模块，为应用程序添加新功能，等等......
 
 ### 生命周期方法
 
@@ -29,13 +31,13 @@ ABP**按照依赖的顺序**调用这些方法。如果模块A依赖于模块B�
 
 #### 预初始化
 
-当应用程序启动时，首先调用此方法。这是在初始化之前[配置](https://aspnetboilerplate.com/Pages/Documents/Startup-Configuration)框架和其他模块的首选方法。
+当应用程序启动时，首先调用此方法。这是在初始化之前[配置](/Overall/Startup-Configuration)框架和其他模块的首选方法。
 
-你还可以在此处编写一些特定代码，以便在注册[依赖注入](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)之前运行。例如，如果您创建[传统注册](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)类，则应使用IocManager.AddConventionalRegisterer方法在此处注册它。
+你还可以在此处编写一些特定代码，以便在注册[依赖注入](/Common.Structures/Dependency-Injection)之前运行。例如，如果您创建传统注册类，则应使用IocManager.AddConventionalRegisterer方法在此处注册它。
 
 #### 初始化
 
-这里是应该注册[依赖注入](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)的地方。它通常使用IocManager.RegisterAssemblyByConvention方法完成。如果要自定义依赖项注册，请参阅[依赖项注入文档](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)。
+这里是应该注册[依赖注入](/Common.Structures/Dependency-Injection)的地方。它通常使用IocManager.RegisterAssemblyByConvention方法完成。如果要自定义依赖项注册，请参阅[依赖项注入文档](/Common.Structures/Dependency-Injection)。
 
 #### 初始化后
 
@@ -66,7 +68,7 @@ ABP可以从启动模块开始递归地解析依赖关系，并相应地初始�
 
 ### 插件模块
 
-尽管ABP是从启动模块开始通过依赖项解析模块，ABP也可以**动态**加载模块。**AbpBootstrapper**定义了**PlugInSources**属性，可以用于在动态加载的[插件模块](https://aspnetboilerplate.com/Pages/Documents/Plugin)中添加资源。任何实现**IPlugInSource**接口的类都可以是插件资源。**PlugInFolderSource**类通过从位于文件夹中的组件获得插件模块实现它。
+尽管ABP是从启动模块开始通过依赖项解析模块，ABP也可以**动态**加载模块。**AbpBootstrapper**定义了**PlugInSources**属性，可以用于在动态加载的[插件模块](/Other/Plugin)中添加资源。任何实现**IPlugInSource**接口的类都可以是插件资源。**PlugInFolderSource**类通过从位于文件夹中的组件获得插件模块实现它。
 
 #### ASP.NET Core
 
@@ -87,7 +89,7 @@ ABP在AddAbp扩展方法中定义选项以便在**Startup**类中添加插件：
     });
 ```
 
-有关Startup类的更多信息，请参阅[ASP.NET Core文档](https://aspnetboilerplate.com/Pages/Documents/AspNet-Core)。
+有关Startup类的更多信息，请参阅[ASP.NET Core文档](/Presentation.Layer/ASP.NET.Core/AspNet-Core)。
 
 #### ASP.NET MVC, Web API
 
@@ -183,7 +185,7 @@ IAssemblyFinder和ITypeFinder（ABP用于解析应用程序中的特定类）的
 
 ### 模块配置
 
-尽管可以使用自定义模块方法配置模块，我们还是建议使用[启动配置](https://aspnetboilerplate.com/Pages/Documents/Startup-Configuration)系统来定义和设置模块配置。
+尽管可以使用自定义模块方法配置模块，我们还是建议使用[启动配置](/Overall/Startup-Configuration)系统来定义和设置模块配置。
 
 ### 模块生命
 

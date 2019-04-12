@@ -1,4 +1,6 @@
-﻿### 介绍
+﻿## N层架构
+
+### 介绍
 
 应用程序代码库的分层是一种被广泛接受的技术，有助于降低复杂性，并提高代码的可重用性。为了实现分层体系结构，ABP遵循**领域驱动设计**原则。
 
@@ -32,12 +34,12 @@ ASP.NET [Core] MVC（模型 - 视图 - 控制器）可以被认为是表示层�
 
 #### 应用层
 
-应用层主要包括[应用服务](/Application.Layer/Application-Services)，它使用领域层和领域对象（[领域服务](https://aspnetboilerplate.com/Pages/Documents/Domain-Services)， [实体](https://aspnetboilerplate.com/Pages/Documents/Entities)……）来执行请求的应用程序功能。它使用[数据传输对象（DTO）](https://aspnetboilerplate.com/Pages/Documents/Data-Transfer-Objects)从表现层或分布式服务层获取数据并将数据返回。它还可以处理[授权](https://aspnetboilerplate.com/Pages/Documents/Authorization)，[缓存](https://aspnetboilerplate.com/Pages/Documents/Caching)，[审计日志](https://aspnetboilerplate.com/Pages/Documents/Audit-Logging)，[对象映射](https://aspnetboilerplate.com/Pages/Documents/Object-To-Object-Mapping)，[会话](https://aspnetboilerplate.com/Pages/Documents/Abp-Session)等……
+应用层主要包括[应用服务](/Application.Layer/Application-Services)，它使用领域层和领域对象（[领域服务](/Domain.Layer/Domain-Services)， [实体](/Domain.Layer/Entities)……）来执行请求的应用程序功能。它使用[数据传输对象（DTO）](/Application.Layer/Data-Transfer-Objects)从表现层或分布式服务层获取数据并将数据返回。它还可以处理[授权](/Application.Layer/Authorization)，缓存](/Common.Structures/Caching)， [审计日志](/Application.Layer/Audit-Logging)，[对象映射](/Common.Structures/Object-To-Object-Mapping)，[会话](/Common.Structures/Abp-Session)等……
 
 #### 领域层
 
-这是实现我们领域逻辑的主要层。它包括[实体](https://aspnetboilerplate.com/Pages/Documents/Entities)，[值对象](https://aspnetboilerplate.com/Pages/Documents/Value-Objects)和[领域服务](https://aspnetboilerplate.com/Pages/Documents/Domain-Services)，来执行业务/领域逻辑。它还可以包括[规范](https://aspnetboilerplate.com/Pages/Documents/Specifications)和触发[领域事件](https://aspnetboilerplate.com/Pages/Documents/EventBus-Domain-Events)。它定义了存储库接口，以便从数据源（通常是DBMS）读取和保留实体。
+这是实现我们领域逻辑的主要层。它包括[实体](/Domain.Layer/Entities)，[值对象](/Domain.Layer/Value-Objects)和[领域服务](/Domain.Layer/Domain-Services)，来执行业务/领域逻辑。它还可以包括[规范](/Domain.Layer/Specifications)和触发[领域事件](/Domain.Layer/EventBus-Domain-Events)。它定义了存储库接口，以便从数据源（通常是DBMS）读取和保留实体。
 
 #### 基础设施层
 
-基础结构层使其他层工作：它实现存储库接口（例如使用[Entity Framework Core](https://aspnetboilerplate.com/Pages/Documents/Entity-Framework-Core)）以实际使用真实数据库。它还可能包括与供应商的集成以[发送电子邮件](https://aspnetboilerplate.com/Pages/Documents/Email-Sending)等。这不是所有层之下的严谨层，实际上常常通过实现其他层的抽象来支撑其他层。
+基础结构层使其他层工作：它实现存储库接口（例如使用[Entity Framework Core](/Object-Relational.Mapping/Entity-Framework-Core)）以实际使用真实数据库。它还可能包括与供应商的集成以[发送电子邮件](/Common.Structures/Email-Sending)等。这不是所有层之下的严谨层，实际上常常通过实现其他层的抽象来支撑其他层。
