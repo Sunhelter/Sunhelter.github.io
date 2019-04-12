@@ -52,7 +52,7 @@ ABP使用最新的**ASP.NET Core**和**EF Core**，也支持ASP.NET MVC 5.x与EF
 
 我们可以在这个简单的示例中看到ABP的优点。所有这些任务通常需要很长时间，但它们可以由框架自动处理。
 
-除了这个简单的示例，ABP还为[模块化](/Overall/Module-System)，[多租户](/Overall/Multi-Tenancy)，[缓存](/Common.Structures/Caching)，[后台作业](/Background.Services/Background-Jobs-And-Workers)，[数据过滤器](/Domain.Layer/Data-Filters)，[设置管理](/Common.Structures/Setting-Management)，[领域事件](/Domain.Layer/EventBus-Domain-Events)，单元和集成测试等提供了强大的基础架构和开发模型。你可以专注于你的业务代码，不要重复自己！
+除了这个简单的示例，ABP还为[模块化](/Overall/Module-System)，[多租户](/Overall/Multi-Tenancy)，[缓存](/Common.Structures/Caching)，[后台作业](/Background.Services/Background-Jobs-And-Workers)，[数据过滤器](/Domain.Layer/Data-Filters)，[配置管理](/Common.Structures/Setting-Management)，[领域事件](/Domain.Layer/EventBus-Domain-Events)，单元和集成测试等提供了强大的基础架构和开发模型。你可以专注于你的业务代码，不要重复自己！
 
 ### 开始使用
 

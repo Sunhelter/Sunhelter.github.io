@@ -18,21 +18,21 @@
 
 #### 客户端应用
 
-这是通过HTTP API（API控制器，[OData](https://aspnetboilerplate.com/Pages/Documents/OData-Integration)控制器，甚至可能是GraphQL端点）将应用程序用作服务的远程客户端。远程客户端可以是SPA（单页面应用程序），移动应用程序或第三方消费者。[本地化](https://aspnetboilerplate.com/Pages/Documents/Localization)和[导航](https://aspnetboilerplate.com/Pages/Documents/Navigation)可以在此应用程序内完成。
+这是通过HTTP API（API控制器，[OData](/Distributed.Service.Layer/ASP.NET.Web.API/OData-Integration)控制器，甚至可能是GraphQL端点）将应用程序用作服务的远程客户端。远程客户端可以是SPA（单页面应用程序），移动应用程序或第三方消费者。[本地化](/Presentation.Layer/Localization)和[导航](/Presentation.Layer/Navigation)可以在此应用程序内完成。
 
 #### 表现层
 
-ASP.NET [Core] MVC（模型 - 视图 - 控制器）可以被认为是表示层。它可以是物理层（通过HTTP API使用应用程序）或逻辑层（直接注入和使用[应用程序服务](https://aspnetboilerplate.com/Pages/Documents/Application-Services)）。在任何一种情况下，它都可以包括[本地化](https://aspnetboilerplate.com/Pages/Documents/Localization)，[导航](https://aspnetboilerplate.com/Pages/Documents/Navigation)， [对象映射](https://aspnetboilerplate.com/Pages/Documents/Object-To-Object-Mapping)， [缓存](https://aspnetboilerplate.com/Pages/Documents/Caching)，[配置管理](https://aspnetboilerplate.com/Pages/Documents/Setting-Management)，[审计日志记录](https://aspnetboilerplate.com/Pages/Documents/Audit-Logging)等。它还涉及[授权](https://aspnetboilerplate.com/Pages/Documents/Authorization)，[会话](https://aspnetboilerplate.com/Pages/Documents/Abp-Session)， [功能](https://aspnetboilerplate.com/Pages/Documents/Feature-Management)（用于 [多租户](https://aspnetboilerplate.com/Pages/Documents/Multi-Tenancy)应用程序）和[异常处理](https://aspnetboilerplate.com/Pages/Documents/Handling-Exceptions)。
+ASP.NET [Core] MVC（模型 - 视图 - 控制器）可以被认为是表示层。它可以是物理层（通过HTTP API使用应用程序）或逻辑层（直接注入和使用[应用服务](/Application.Layer/Application-Services)）。在任何一种情况下，它都可以包括[本地化](/Presentation.Layer/Localization)，[导航](/Presentation.Layer/Navigation)， [对象映射](/Common.Structures/Object-To-Object-Mapping)， [缓存](/Common.Structures/Caching)，[配置管理](/Common.Structures/Setting-Management)，[审计日志](/Application.Layer/Audit-Logging)等。它还涉及[授权](/Application.Layer/Authorization)，[会话](/Common.Structures/Abp-Session)， [功能](/Application.Layer/Feature-Management)（用于 [多租户](/Overall/Multi-Tenancy)应用程序）和[异常处理](/Presentation.Layer/ASP.NET.MVC/Handling-Exceptions)。
 
 
 
 #### 分布式服务层
 
-该层用于通过REST，OData，GraphQL等远程API提供应用程序/领域功能......它们不包含业务逻辑，只是将HTTP请求转换为领域交互，或者可以使用应用程序服务委托操作。该层通常包括[授权](https://aspnetboilerplate.com/Pages/Documents/Authorization)，[缓存](https://aspnetboilerplate.com/Pages/Documents/Caching)， [审计日志](https://aspnetboilerplate.com/Pages/Documents/Audit-Logging)，[对象映射](https://aspnetboilerplate.com/Pages/Documents/Object-To-Object-Mapping)，[异常处理](https://aspnetboilerplate.com/Pages/Documents/Handling-Exceptions)，[会话](https://aspnetboilerplate.com/Pages/Documents/Abp-Session)等……
+该层用于通过REST，OData，GraphQL等远程API提供应用程序/领域功能......它们不包含业务逻辑，只是将HTTP请求转换为领域交互，或者可以使用应用程序服务委托操作。该层通常包括[授权](/Application.Layer/Authorization)，[缓存](/Common.Structures/Caching)， [审计日志](/Application.Layer/Audit-Logging)，[对象映射](/Common.Structures/Object-To-Object-Mapping)，[异常处理](/Presentation.Layer/ASP.NET.MVC/Handling-Exceptions)，[会话](/Common.Structures/Abp-Session)等……
 
 #### 应用层
 
-应用层主要包括[应用服务](https://aspnetboilerplate.com/Pages/Documents/Application-Services)，它使用领域层和领域对象（[领域服务](https://aspnetboilerplate.com/Pages/Documents/Domain-Services)， [实体](https://aspnetboilerplate.com/Pages/Documents/Entities)……）来执行请求的应用程序功能。它使用[数据传输对象（DTO）](https://aspnetboilerplate.com/Pages/Documents/Data-Transfer-Objects)从表现层或分布式服务层获取数据并将数据返回。它还可以处理[授权](https://aspnetboilerplate.com/Pages/Documents/Authorization)，[缓存](https://aspnetboilerplate.com/Pages/Documents/Caching)，[审计日志](https://aspnetboilerplate.com/Pages/Documents/Audit-Logging)，[对象映射](https://aspnetboilerplate.com/Pages/Documents/Object-To-Object-Mapping)，[会话](https://aspnetboilerplate.com/Pages/Documents/Abp-Session)等……
+应用层主要包括[应用服务](/Application.Layer/Application-Services)，它使用领域层和领域对象（[领域服务](https://aspnetboilerplate.com/Pages/Documents/Domain-Services)， [实体](https://aspnetboilerplate.com/Pages/Documents/Entities)……）来执行请求的应用程序功能。它使用[数据传输对象（DTO）](https://aspnetboilerplate.com/Pages/Documents/Data-Transfer-Objects)从表现层或分布式服务层获取数据并将数据返回。它还可以处理[授权](https://aspnetboilerplate.com/Pages/Documents/Authorization)，[缓存](https://aspnetboilerplate.com/Pages/Documents/Caching)，[审计日志](https://aspnetboilerplate.com/Pages/Documents/Audit-Logging)，[对象映射](https://aspnetboilerplate.com/Pages/Documents/Object-To-Object-Mapping)，[会话](https://aspnetboilerplate.com/Pages/Documents/Abp-Session)等……
 
 #### 领域层
 
