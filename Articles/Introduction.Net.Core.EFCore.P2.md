@@ -6,7 +6,7 @@
 
 本文是“使用ASP.NET Core,Entity Framework Core和ABP框架创建多层网页应用”系列文章的第二部分，查看其他部分：
 
-* [使用ASP.NET Core,Entity Framework Core和ABP框架创建多层网页应用 - 第一部分](./Introduction.Net.Core.EFCore.P1.md)
+* [使用ASP.NET Core,Entity Framework Core和ABP框架创建多层网页应用 - 第一部分](/Articles/Introduction.Net.Core.EFCore.P1.md)
 * 使用ASP.NET Core,Entity Framework Core和ABP框架创建多层网页应用 - 第二部分（本文）
 
 ## 开发应用
