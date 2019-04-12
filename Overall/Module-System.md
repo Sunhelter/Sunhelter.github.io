@@ -1,21 +1,14 @@
 ﻿### 介绍
 
+ABP提供了构建模块的基础结构，并将它们组合在一起以创建应用程序。模块可以依赖于另一个模块。程序集通常被视为模块。如果创建具有多个程序集的应用程序，则建议为每个程序集创建一个模块定义。
 
+模块系统目前专注于服务器端而不是客户端。
 
-ASP.NET Boilerplate provides the infrastructure to build modules and
-compose them to create an application. A module can depend on another
-module. Generally, an assembly is considered a module. If you create
-an application with more than one assembly, it's recommended that you create a
-module definition for each one.
+### 模块定义
 
-The module system is currently focused on the server-side rather than client-side.
+模块由[ABP package](https://www.nuget.org/packages/Abp)中的AbpModule派生的类定义。假设我们正在开发一个可以在不同应用程序中使用的Blog模块。最简单的模块定义如下所示：
 
-### Module Definition
-
-A module is defined with a class that is derived from **AbpModule** that is in the [ABP package](https://www.nuget.org/packages/Abp). Say
-that we're developing a Blog module that can be used in different
-applications. The simplest module definition can be as shown below:
-
+``` C#
     public class MyBlogApplicationModule : AbpModule
     {
         public override void Initialize()
@@ -23,59 +16,40 @@ applications. The simplest module definition can be as shown below:
             IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
         }
     }
+```
+如果需要，模块定义类负责通过[依赖注入](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)来注册它（它可以按常规方式完成，如上所示）。它还可以配置应用程序和其他模块，为应用程序添加新功能，等等......
 
-The Module definition class is responsible for registering its classes via
-[dependency injection](Dependency-Injection.md), if needed (it can be done
-conventionally as shown above). It can also configure the application
-and other modules, add new features to the application, and so on...
+### 生命周期方法
 
-### Lifecycle Methods
+ABP在应用程序启动和关闭时调用某些特定的模块方法。您可以覆盖这些方法以执行某些特定任务。
 
-ASP.NET Boilerplate calls some specific methods of modules on
-application startup and shutdown. You can override these methods to
-perform some specific tasks.
+ABP**按照依赖的顺序**调用这些方法。如果模块A依赖于模块B，则先初始化模块B。
 
-ASP.NET Boilerplate calls these methods **ordered by dependencies**. If
-module A depends on module B, module B is initialized before module A.
+开始方法的正确顺序是：预初始化B，预初始化A，初始化B，初始化A，初始化后B和初始化后A。所有依赖顺序图都是如此。**关闭方法**类似，不过**顺序相反**。
 
-The exact order of startup methods: PreInitialize-B, PreInitialize-A,
-Initialize-B, Initialize-A, PostInitialize-B and PostInitialize-A. This
-is true for all dependency graphs. The **shutdown** method is also similar,
-but in **reverse order**.
+#### 预初始化
 
-#### PreInitialize
+当应用程序启动时，首先调用此方法。这是在初始化之前[配置](https://aspnetboilerplate.com/Pages/Documents/Startup-Configuration)框架和其他模块的首选方法。
 
-This method is called first, when the application starts. It's the go-to method
-to [configure](Startup-Configuration.md) the framework and other
-modules before they initialize.
+你还可以在此处编写一些特定代码，以便在注册[依赖注入](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)之前运行。例如，如果您创建[传统注册](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)类，则应使用IocManager.AddConventionalRegisterer方法在此处注册它。
 
-You can also write some specific code here to run before the dependency
-injection registrations. For example, if you create a [conventional
-registration](Dependency-Injection.md) class, you should register it
-here using the IocManager.AddConventionalRegisterer method.
+#### 初始化
 
-#### Initialize
+这里是应该注册[依赖注入](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)的地方。它通常使用IocManager.RegisterAssemblyByConvention方法完成。如果要自定义依赖项注册，请参阅[依赖项注入文档](https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection)。
 
-This is the place where [dependency
-injection](/Pages/Documents/Dependency-Injection) registration should be
-done. It's generally done using the IocManager.RegisterAssemblyByConvention
-method. If you want to define custom dependency registration, see the
-[dependency injection documentation](Dependency-Injection.md).
+#### 初始化后
 
-#### PostInitialize
+该方法在应用启动的最后调用。在这里可以安全地解析一个依赖。
 
-This method is called last in the startup process. It's safe to resolve a
-dependency here.
+#### 关闭
 
-#### Shutdown
+该方法在应用关闭的时候调用
 
-This method is called when the application shuts down.
+### 模块依赖
 
-### Module Dependencies
+一个模块可以独立于另一个模块。你需要使用DependOn属性显示声明依赖，如下所示：
 
-A module can be dependent on another. You need to **explicitly**
-declare the dependencies using the **DependsOn** attribute, like below:
-
+``` C#
     [DependsOn(typeof(MyBlogCoreModule))]
     public class MyBlogApplicationModule : AbpModule
     {
@@ -84,49 +58,42 @@ declare the dependencies using the **DependsOn** attribute, like below:
             IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
         }
     }
+```
 
-Here, we declare to ASP.NET Boilerplate that MyBlogApplicationModule
-depends on the MyBlogCoreModule and the MyBlogCoreModule should be
-initialized before the MyBlogApplicationModule.
+在这里，我们向ABP声明MyBlogApplicationModule依赖于MyBlogCoreModule，因此MyBlogCoreModule应该在MyBlogApplicationModule之前初始化。
 
-ABP can resolve dependencies recursively beginning from the **startup
-module** and initialize them accordingly. The startup module initializes as
-the last module.
+ABP可以从启动模块开始递归地解析依赖关系，并相应地初始化它们。**启动模块**初始化时最后一个模块。
 
-### PlugIn Modules
+### 插件模块
 
-While modules are investigated beginning from the startup module and go
-through the dependencies, ABP can also load modules **dynamically**.
-The **AbpBootstrapper** class defines the **PlugInSources** property which can
-be used to add sources to dynamically loaded [plugin modules](Plugin.md). A plugin
-source can be any class implementing the **IPlugInSource** interface.
-The **PlugInFolderSource** class implements it to get the plugin modules from
-assemblies located in a folder.
+尽管ABP是从启动模块开始通过依赖项解析模块，ABP也可以**动态**加载模块。**AbpBootstrapper**定义了**PlugInSources**属性，可以用于在动态加载的[插件模块](https://aspnetboilerplate.com/Pages/Documents/Plugin)中添加资源。任何实现**IPlugInSource**接口的类都可以是插件资源。**PlugInFolderSource**类通过从位于文件夹中的组件获得插件模块实现它。
 
 #### ASP.NET Core
 
-The ABP ASP.NET Core module defines options in the **AddAbp** extension method
-to add plugin sources in the **Startup** class:
-
+ABP在AddAbp扩展方法中定义选项以便在**Startup**类中添加插件：
+``` C#
     services.AddAbp<MyStartupModule>(options =>
     {
         options.PlugInSources.Add(new FolderPlugInSource(@"C:\MyPlugIns"));
     });
+```
 
-We could use the **AddFolder** extension method for a simpler syntax:
+还可以使用写法更简单的AddFolder扩展方法：
 
+``` C#
     services.AddAbp<MyStartupModule>(options =>
     {
         options.PlugInSources.AddFolder(@"C:\MyPlugIns");
     });
+```
 
-See the [ASP.NET Core document](AspNet-Core.md) for more info on the Startup class.
+有关Startup类的更多信息，请参阅[ASP.NET Core文档](https://aspnetboilerplate.com/Pages/Documents/AspNet-Core)。
 
 #### ASP.NET MVC, Web API
 
-For classic ASP.NET MVC applications, we can add plugin folders by
-overriding the **Application\_Start** in the **global.asax** as shown below:
+对于经典的ASP.NET MVC应用程序，我们可以通过重写Global.asax中的**Application_Start**来添加插件文件夹，如下所示：
 
+``` C#
     public class MvcApplication : AbpWebApplication<MyStartupModule>
     {
         protected override void Application_Start(object sender, EventArgs e)
@@ -136,13 +103,13 @@ overriding the **Application\_Start** in the **global.asax** as shown below:
             base.Application_Start(sender, e);
         }
     }
+```
 
-##### Controllers in PlugIns
+##### 插件中的控制器
 
-If your modules include MVC or Web API Controllers,
-ASP.NET cannot investigate your controllers. To overcome this issue,
-you can change the global.asax file like below:
+如果您的模块包含MVC或Web API控制器，则ASP.NET无法解析您的控制器。要解决此问题，您可以更改global.asax文件，如下所示：
 
+``` C#
     using System.Web;
     using Abp.PlugIns;
     using Abp.Web;
@@ -166,21 +133,17 @@ you can change the global.asax file like below:
             }
         }
     }
+```
 
-### Additional Assemblies
+### 附加组件
 
-The default implementations for IAssemblyFinder and ITypeFinder (which is
-used by ABP to investigate specific classes in the application) only
-finds module assemblies and types in those assemblies. We can override the
-**GetAdditionalAssemblies** method in our module to include additional
-assemblies.
+IAssemblyFinder和ITypeFinder（ABP用于解析应用程序中的特定类）的默认实现仅在这些程序集中查找模块程序集和类型。我们可以重写模块中的GetAdditionalAssemblies方法以包含其他程序集。
 
-### Custom Module Methods
+### 自定义模块方法
 
-Your modules can also have custom methods that can be used by other
-modules that depend on this module. Assume that MyModule2 depends on
-MyModule1 and wants to call a method of MyModule1 in the PreInitialize method.
+你的模块还可以具有自定义方法，以供其他依赖于此模块的模块使用。假设 MyModule2依赖于 MyModule1，想要在预初始化方法中调用 MyModule1的方法。
 
+``` C#
     public class MyModule1 : AbpModule
     {
         public override void Initialize()
@@ -214,17 +177,14 @@ MyModule1 and wants to call a method of MyModule1 in the PreInitialize method.
             IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
         }
     }
+```
 
-Here we constructor-injected MyModule1 to MyModule2, so MyModule2 can
-call MyModule1's custom method. This is only possible if Module2 depends
-on Module1.
+这里我们将 MyModule1通过构造函数注入到 MyModule2，因此 MyModule2可以调用 MyModule1的自定义 方法。只有在 MyModule2依赖于 MyModule1时才可以这么做。
 
-### Module Configuration
+### 模块配置
 
-While custom module methods can be used to configure modules, we suggest
-you use the [startup configuration](Startup-Configuration.md) system to
-define and set the configuration for modules.
+尽管可以使用自定义模块方法配置模块，我们还是建议使用[启动配置](https://aspnetboilerplate.com/Pages/Documents/Startup-Configuration)系统来定义和设置模块配置。
 
-### Module Lifetime
+### 模块生命
 
-Module classes are automatically registered as a **singleton**.
+模块类自动注册为**单例（singleton）**。
