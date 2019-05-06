@@ -1,26 +1,18 @@
-### Introduction
+## 授权
 
-Almost all enterprise applications use authorization at some level.
-Authorization is used to check if a user is allowed to perform some
-specific operation in the application. ASP.NET Boilerplate defines a
-**permission based** infrastructure to implement authorization.
+### 介绍
 
-#### About IPermissionChecker
+几乎所有的企业应用都会在某种程度上使用授权。授权用于检查是否允许用户执行应用中的某些操作。ABP定义了一个**基于权限**的基础设施来实现授权。
 
-The Authorization system uses **IPermissionChecker** to check permissions.
-While you can implement it in your own way, it's fully implemented in the
-**Module Zero** project. If it's not implemented, NullPermissionChecker
-is used which grants all permissions to everyone.
+#### 关于IPermissionChecker
 
-### Defining Permissions
+授权系统使用**IPermissionChecker**来检查权限。在**Module Zero**项目中已经完全实现了它，不过你也可以用自己的方式实现它。若未实现它，将会使用NullPermissionChecker向所有用户授予完全权限。
 
-A unique **permission** is defined for each operation that needs to be
-authorized. We need to define a permission before it is used. ASP.NET
-Boilerplate is designed to be [modular](/Pages/Documents/Module-System),
-so different modules can have different permissions. A module should
-create a class derived from **AuthorizationProvider** in order to define
-it's permissions. An example authorization provider is shown below:
+### 定义权限
 
+唯一**权限**用来定义每个需要授权的操作。权限在使用前需要先定义。ABP被设计为[模块化](/Overall/Module-System)，因此不同的模块可以拥有不同的权限。模块应该创建一个派生自**AuthorizationProvider**的类来定义权限。示例如下：
+
+``` C#
     public class MyAuthorizationProvider : AuthorizationProvider
     {
         public override void SetPermissions(IPermissionDefinitionContext context)
@@ -33,173 +25,130 @@ it's permissions. An example authorization provider is shown below:
             var roleManagement = administration.CreateChildPermission("Administration.RoleManagement");
         }
     }
-                
+```                
 
-**IPermissionDefinitionContext** has methods to get and create
-permissions.
+**IPermissionDefinitionContext**提供了创建和获取权限的方法。
 
-A permission is defined with these properties:
+权限定义了这些属性：
 
--   **Name**: a system-wide **unique** name. It's a good idea to define a
-    const string for a permission name instead of a magic string. We
-    prefer to use . (dot) notation for hierarchical names but it's not
-    required. You can set any name you like. The only rule is that it must
-    be unique.
--   **Display name**: A localizable string that can be used to show the
-    permission later in UI.
--   **Description**: A localizable string that can be used to show the
-    definition of the permission later in UI.
--   **MultiTenancySides**: For the multi-tenant application, a permission
-    can be used by tenants or the host. This is a **Flags** enumeration
-    and thus a permission can be used on both sides.
--   **featureDependency**: Can be used to declare a dependency to
-    [features](/Pages/Documents/Feature-Management). Thus, this
-    permission can be granted only if the feature dependency is satisfied.
-    It waits for an object implementing IFeatureDependency. The default
-    implementation is the SimpleFeatureDependency class. Example usage:
-    `new SimpleFeatureDependency("MyFeatureName")`
+* **Name**：系统级唯一的名称。最好为权限名定义一个常量字符串，而不是变量字符串。我们倾向使用“.”符号用于有层次的名称，但这不是强制的。你可以按自己的喜好命名，唯一要求是名称必须唯一。
+* **Display name**:用于在用户界面显示权限名称的本地字符串。
+* **Description**：用于在用户界面显示权限描述的本地字符串。
+* **MultiTenancySides**：对于多租户应用，租户和租主可以使用同一个权限，因为它是一个**Flags**枚举。
+* **featureDependency**：可以为[功能](/Application.Layer/Feature-Management)声明依赖。因此可以仅在满足功能依赖时才能授予权限。它等待实现IFeatureDependency的对象。默认实现是SimpleFeatureDependency类。用法如下：`new SimpleFeatureDependency("MyFeatureName")`
 
-Permissions can have parent and child permissions. While this does
-not affect permission checking, it helps to group the permissions in the UI.
+权限可以有父权限和子权限。这不会影响权限验证，但可以在用户界面中对权限分组管理。
 
-After creating an authorization provider, we should register it in the
-PreInitialize method of our module:
+定义权限后，我们应该在模块的预初始化方法中注册它：
 
+``` C#
     Configuration.Authorization.Providers.Add<MyAuthorizationProvider>();
+```
 
-Authorization providers are registered to [dependency
-injection](/Pages/Documents/Dependency-Injection) automatically. An
-authorization provider can inject any dependency (like a repository) to
-build permission definitions using some other sources.
+权限定义类会被自动注册到[依赖注入](/Common.Structures/Dependency-Injection)。权限定义类可以注入到任意依赖中（如仓储）来使用其他资源创建权限定义。
 
-### Checking Permissions
+### 权限验证
 
-#### Using AbpAuthorize Attribute
+#### 使用AbpAuthorize属性
 
-The **AbpAuthorize** (**AbpMvcAuthorize** for MVC Controllers and
-**AbpApiAuthorize** for Web API Controllers) attribute is the easiest
-and most common way of checking permissions. Consider the [application
-service](/Pages/Documents/Application-Services) method shown below:
+**AbpAuthorize**（MVC控制器中的**AbpMvcAuthorize**与Web API控制器中的**AbpApiAuthorize**）属性是最简单也是最常用的验证方式。比如下面的[应用服务](/Application.Layer/Application-Services.md)方法:
 
+``` C#
     [AbpAuthorize("Administration.UserManagement.CreateUser")]
     public void CreateUser(CreateUserInput input)
     {
-        //A user can not execute this method if he is not granted the "Administration.UserManagement.CreateUser" permission.
+        // 如果用户未被授予“Administration.UserManagement.CreateUser”权限，那么他不能执行此方法。
     }
+```
 
-The CreateUser method can not be called by a user who is not granted the
-permission "*Administration.UserManagement.CreateUser*".
+CreateUser方法不能被未被授予“Administration.UserManagement.CreateUser”权限的用户调用。
 
-The AbpAuthorize attribute also checks if the current user is logged in (using
-[IAbpSession.UserId](/Pages/Documents/Abp-Session)). If we declare
-an AbpAuthorize for a method, it only checks for the login:
+AbpAuthorize属性还会验证当前用户是否登录（使用[IAbpSession.UserId](/Common.Structures/Abp-Session.md)）。如果我们为方法声明AbpAuthorize，它将只验证登录：
 
+``` C#
     [AbpAuthorize]
     public void SomeMethod(SomeMethodInput input)
     {
-        //A user can not execute this method if he did not login.
+        //未登录用户不能执行此方法。
     }
+```
 
-##### AbpAuthorize attribute notes
+##### AbpAuthorize属性注意事项
 
-ASP.NET Boilerplate uses the power of dynamic method interception for
-authorization. There are some restrictions for the methods using the
-AbpAuthorize attribute.
+ABP使用了强大的动态方法拦截权限。因此使用AbpAuthorize属性有一些限制。
 
--   It cannot be used for private methods.
--   It cannot be used for static methods.
--   You can not use it for methods of a non-injected class (We must use
-    [dependency injection](/Pages/Documents/Dependency-Injection)).
+* 不能用于私有方法。
+* 不能用于静态方法。
+* 不能用于非注入类方法（必须使用[依赖注入](/Common.Structures/Dependency-Injection)）。
 
-Also:
+另外：
 
--   You can use it for any **public** method if the method is called over an
-    **interface** (like Application Services used over interface).
--   A method should be **virtual** if it's called directly from a class
-    reference (like ASP.NET MVC or Web API Controllers).
--   A method should be **virtual** if it's **protected**.
+* 可以用于通过接口调用的任何公开（public）方法，比如通过接口使用应用服务。
+* 如果方法是从类的引用直接调用的，则它应该是**虚拟方法（virtual）**，比如ASP.NET MVC或Web API控制器。
+* 保护方法（protected）应该是**虚拟方法（virtual）**。
 
-**Note**: There are four types of authorize attributes:
+**注意**：授权属性共有四种类型：
+* 在应用服务（应用层）中使用**Abp.Authorization.AbpAuthorize**属性。
+* 在MVC控制器中使用**Abp.Web.Mvc.Authorization.AbpMvcAuthorize**属性。
+* 在ASP.NET Web API中使用**Abp.WebApi.Authorization.AbpApiAuthorize**属性。
+* 在ASP.NET Core中使用**Abp.AspNetCore.Mvc.Authorization.AbpMvcAuthorize**属性。
 
--   In an application service (application layer), we use the
-    **Abp.Authorization.AbpAuthorize** attribute.
--   In an MVC controller (web layer), we use the
-    **Abp.Web.Mvc.Authorization.AbpMvcAuthorize** attribute.
--   In ASP.NET Web API, we use the
-    **Abp.WebApi.Authorization.AbpApiAuthorize** attribute.
--   In ASP.NET Core, we use the
-    **Abp.AspNetCore.Mvc.Authorization.AbpMvcAuthorize** attribute.
+这些差异来源于继承。应用层中完全是ABP的实现，没有扩展任何类。对于MVC和Web API，它继承自框架的Authorize属性。
 
-This difference comes from inheritance. In the application layer it's
-completely ASP.NET Boilerplate's implementation and it does not extend any
-class. For MVC and Web API, it inherits from the Authorize attributes
-of those frameworks.
+##### 禁止授权
 
-##### Suppress Authorization
+你可以在应用服务中添加**AbpAllowAnonymous**属性为方法或类停用授权。在MVC、Web API和ASP.NET Core控制器中则使用框架原生的**AllowAnonymous**属性。
 
-You can disable authorization for a method/class by adding
-**AbpAllowAnonymous** attribute to application services. Use the
-**AllowAnonymous** attribute for MVC, Web API and ASP.NET Core Controllers, which
-is a native attribute of these frameworks.
+#### 使用IPermissionChecker
 
-#### Using IPermissionChecker
+虽然AbpAuthorize属性适用于大多数情况，但是可能会有需要在方法内部检查权限的情况。我们可以注入并使用**IPermissionChecker**，如下所示：
 
-While the AbpAuthorize attribute is good enough for most cases, there are 
-situations where we may want to check for a permission in a method's body. We can
-inject and use **IPermissionChecker** for that as shown in the example
-below:
-
+``` C#
     public void CreateUser(CreateOrUpdateUserInput input)
     {
         if (!PermissionChecker.IsGranted("Administration.UserManagement.CreateUser"))
         {
-            throw new AbpAuthorizationException("You are not authorized to create user!");
+            throw new AbpAuthorizationException("你没有创建用户的权限!");
         }
 
-        //A user can not reach this point if he is not granted for "Administration.UserManagement.CreateUser" permission.
+        //未被授予“Administration.UserManagement.CreateUser”权限的用户无法进入这一步。
     }
+```
 
-You can code any logic since **IsGranted** simply returns true
-or false (It has an Async version, too). If you simply check a permission
-and throw an exception as shown above, you can use the **Authorize**
-method:
+**IsGranted**（也有异步Async版）仅返回布尔值，因此你可以编写任何逻辑代码。如果你仅仅只是检查权限并像上面那样抛出异常，你可以使用**Authorize**方法。：
 
+``` C#
     public void CreateUser(CreateOrUpdateUserInput input)
     {
         PermissionChecker.Authorize("Administration.UserManagement.CreateUser");
 
-        //A user can not reach this point if he is not granted for "Administration.UserManagement.CreateUser" permission.
+        //未被授予“Administration.UserManagement.CreateUser”权限的用户无法进入这一步。
     }
+```
 
-Since authorization is widely used, **ApplicationService** and some
-common base classes inject and define the PermissionChecker property. Thus,
-permission checker can be used without injecting application service
-classes.
+由于授权应用广泛，**ApplicationService**和一些公共基类已经注入并定义PermissionChecker属性。 因此，权限验证可以在不注入应用程序服务的情况下使用。
 
-#### In Razor Views
+#### 在Razor视图中使用
 
-The base view class defines the IsGranted method to check if the current user has
-permission. Thus, we can conditionally render the view. Example:
+视图基类定义了IsGranted方法检验当前用户权限。因此我们可以有条件地渲染视图。例如：
 
+``` C#
     @if (IsGranted("Administration.UserManagement.CreateUser"))
     {
         <button id="CreateNewUserButton" class="btn btn-primary"><i class="fa fa-plus"></i> @L("CreateNewUser")</button>
     }
+```
 
-#### Client Side (JavaScript)
+#### 客户端(JavaScript)
 
-In the client side, we can use the API defined in the **abp.auth** namespace. In
-most cases, we need to check if the current user has a specific permission
-(with permission name). Example:
+在客户端，我们可以使用定义在abp.auth命名空间下的API。多数情况下，我们需要验证当前用户的特定权限（使用权限名）。例如：
 
+``` javascript
     abp.auth.isGranted('Administration.UserManagement.CreateUser');
+```
 
-You can also use **abp.auth.grantedPermissions** to get all granted
-permissions or **abp.auth.allPermissions** to get all available
-permission names in the application. Check **abp.auth** namespace on
-runtime for others.
+你也可以使用**abp.auth.grantedPermissions**获取所有已授权限或**abp.auth.allPermissions**获取应用中所有可用权限名。运行时在**abp.auth**命名空间下查看其它方法。
 
-### Permission Manager
+### 权限管理
 
-We may need the definitions of permissions. **IPermissionManager** can be
-[injected](/Pages/Documents/Dependency-Injection) and used in this case.
+如果需要定义权限，可以[注入](/Common.Structures/Dependency-Injection)并使用**IPermissionManager**。

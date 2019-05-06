@@ -3,11 +3,11 @@
 ABP框架中文文档v4.5.0
 =============================
 
-点此开始：https://sunhelter.com
+点此开始：[https://sunhelter.com](https://sunhelter.com)
 
 # 总览
 * [介绍](/Overall/Introduction)
-* [教程](/Overall/Articles-Tutorials.md)
+* [教程](/Overall/Articles-Tutorials)
 * [N层架构](/Overall/NLayer-Architecture)
 * [模块系统](/Overall/Module-System)
 * [启动配置](/Overall/Startup-Configuration)
@@ -16,9 +16,9 @@ ABP框架中文文档v4.5.0
 * [Debugging](Debugging.md)
 * [API Reference](https://aspnetboilerplate.com/api-docs/index.html)
 
-Common Structures
+通用结构
 
-* [Dependency Injection](Dependency-Injection.md)
+* [依赖注入](/Common.Structures/Dependency-Injection)
 * [Session](Abp-Session.md)
 * [Caching](Caching.md)
 * [Logging](Logging.md)
@@ -27,7 +27,7 @@ Common Structures
 * [Object To Object Mapping (and AutoMapper Integration)](Object-To-Object-Mapping.md)
 * [Email Sending (and MailKit Integration)](Email-Sending.md)
 
-Domain Layer
+领域层
 
 * [Entities](Entities.md)
     * [Multi-Lingual Entities <label class="label label-success">NEW</label>](Multi-Lingual-Entities.md)
@@ -39,13 +39,13 @@ Domain Layer
 * [Domain Events (EventBus)](EventBus-Domain-Events.md)
 * [Data Filters](Data-Filters.md)
 
-Application Layer
+应用层
 
-* [Application Services](Application-Services.md)
+* [应用服务](/Application.Layer/Application-Services.md)
 * [Data Transfer Objects](Data-Transfer-Objects.md)
 * [Validating Data Transfer Objects](Validating-Data-Transfer-Objects.md)
-* [Authorization](Authorization.md)
-* [Feature Management](Feature-Management.md)
+* [授权](/Application.Layer/Authorization)
+* [功能](/Application.Layer/Feature-Management)
 * [Audit Logging](Audit-Logging.md)
 * [Entity History <label class="label label-success">NEW</label>](Entity-History.md)
 
