@@ -11,99 +11,99 @@ ABP框架中文文档v4.5.0
 * [N层架构](/Overall/NLayer-Architecture)
 * [模块系统](/Overall/Module-System)
 * [启动配置](/Overall/Startup-Configuration)
-* [Multi-Tenancy](Multi-Tenancy.md)
-* [OWIN Integration](OWIN.md)
-* [Debugging](Debugging.md)
+* [Multi-Tenancy](Multi-Tenancy)
+* [OWIN Integration](OWIN)
+* [Debugging](Debugging)
 * [API Reference](https://aspnetboilerplate.com/api-docs/index.html)
 
 通用结构
 
 * [依赖注入](/Common.Structures/Dependency-Injection)
-* [Session](Abp-Session.md)
-* [Caching](Caching.md)
-* [Logging](Logging.md)
-* [Setting Management](Setting-Management.md)
-* [Timing](Timing.md)
-* [Object To Object Mapping (and AutoMapper Integration)](Object-To-Object-Mapping.md)
-* [Email Sending (and MailKit Integration)](Email-Sending.md)
+* [Session](Abp-Session)
+* [Caching](Caching)
+* [Logging](Logging)
+* [Setting Management](Setting-Management)
+* [Timing](Timing)
+* [Object To Object Mapping (and AutoMapper Integration)](Object-To-Object-Mapping)
+* [Email Sending (and MailKit Integration)](Email-Sending)
 
 领域层
 
-* [Entities](Entities.md)
-    * [Multi-Lingual Entities <label class="label label-success">NEW</label>](Multi-Lingual-Entities.md)
-* [Value Objects](Value-Objects.md)
-* [Repositories](Repositories.md)
-* [Domain Services](Domain-Services.md)
-* [Specifications](Specifications.md)
-* [Unit Of Work](Unit-Of-Work.md)
-* [Domain Events (EventBus)](EventBus-Domain-Events.md)
-* [Data Filters](Data-Filters.md)
+* [Entities](Entities)
+    * [Multi-Lingual Entities <label class="label label-success">NEW</label>](Multi-Lingual-Entities)
+* [Value Objects](Value-Objects)
+* [仓储](/Domain.Layer/Repositories)
+* [Domain Services](Domain-Services)
+* [Specifications](Specifications)
+* [Unit Of Work](Unit-Of-Work)
+* [Domain Events (EventBus)](EventBus-Domain-Events)
+* [Data Filters](Data-Filters)
 
 应用层
 
-* [应用服务](/Application.Layer/Application-Services.md)
-* [Data Transfer Objects](Data-Transfer-Objects.md)
-* [Validating Data Transfer Objects](Validating-Data-Transfer-Objects.md)
+* [应用服务](/Application.Layer/Application-Services)
+* [Data Transfer Objects](Data-Transfer-Objects)
+* [Validating Data Transfer Objects](Validating-Data-Transfer-Objects)
 * [授权](/Application.Layer/Authorization)
 * [功能](/Application.Layer/Feature-Management)
-* [Audit Logging](Audit-Logging.md)
-* [Entity History <label class="label label-success">NEW</label>](Entity-History.md)
+* [Audit Logging](Audit-Logging)
+* [Entity History](Entity-History)
 
 Distributed Service Layer
 
 -   ASP.NET Web API
-    * [Web API Controllers](Web-API-Controllers.md)
-    * [Dynamic Web API Layer](Dynamic-Web-API.md)
-    * [OData Integration](OData-Integration.md)
-    * [Swagger UI Integration](Swagger-UI-Integration.md)
+    * [Web API Controllers](Web-API-Controllers)
+    * [Dynamic Web API Layer](Dynamic-Web-API)
+    * [OData Integration](OData-Integration)
+    * [Swagger UI Integration](Swagger-UI-Integration)
 
 Presentation Layer
 
 -   ASP.NET MVC
-    * [MVC Controllers](MVC-Controllers.md)
-    * [MVC Views](MVC-Views.md)
-    * [Handling Exceptions](Handling-Exceptions.md)
+    * [MVC Controllers](MVC-Controllers)
+    * [MVC Views](MVC-Views)
+    * [Handling Exceptions](Handling-Exceptions)
 -   ASP.NET Core
-    * [ASP.NET Core Integration](AspNet-Core.md)
-    * [ASP.NET Core OData Integration <label class="label label-success">NEW</label>](OData-AspNetCore-Integration.md)
-* [Localization](Localization.md)
-* [Navigation](Navigation.md)
-* [Embedded Resources](Embedded-Resource-Files.md)
+    * [ASP.NET Core Integration](AspNet-Core)
+    * [ASP.NET Core OData Integration <label class="label label-success">NEW</label>](OData-AspNetCore-Integration)
+* [Localization](Localization)
+* [Navigation](Navigation)
+* [Embedded Resources](Embedded-Resource-Files)
 * [Javascript API](/Pages/Documents/Javascript-API)
-* [CSRF/XSRF Protection](XSRF-CSRF-Protection.md)
-* [Alerts](UI-Alerts.md)
+* [CSRF/XSRF Protection](XSRF-CSRF-Protection)
+* [Alerts](UI-Alerts)
 
 Background Services
 
-* [Background Jobs and Workers](Background-Jobs-And-Workers.md)
-* [Hangfire Integration](Hangfire-Integration.md)
-* [Quartz Integration](Quartz-Integration.md)
+* [Background Jobs and Workers](Background-Jobs-And-Workers)
+* [Hangfire Integration](Hangfire-Integration)
+* [Quartz Integration](Quartz-Integration)
 
 Real Time Services
 
-* [Notification System](Notification-System.md)
-* [SignalR Integration](SignalR-Integration.md)
-* [SignalR ASP.NET Core Integration <label class="label label-success">NEW</label>](SignalR-AspNetCore-Integration.md)
+* [Notification System](Notification-System)
+* [SignalR Integration](SignalR-Integration)
+* [SignalR ASP.NET Core Integration <label class="label label-success">NEW</label>](SignalR-AspNetCore-Integration)
 
 Object-Relational Mapping
 
-* [EntityFramework Integration](EntityFramework-Integration.md)
-* [EntityFramework Core Integration](Entity-Framework-Core.md)
-* [NHibernate Integration](NHibernate-Integration.md)
-* [Dapper Integration](Dapper-Integration.md)
+* [EntityFramework Integration](EntityFramework-Integration)
+* [EntityFramework Core Integration](Entity-Framework-Core)
+* [NHibernate Integration](NHibernate-Integration)
+* [Dapper Integration](Dapper-Integration)
 
 Releases
 
-* [Nuget Packages](Nuget-Packages.md)
+* [Nuget Packages](Nuget-Packages)
 * [Change Logs & Releases](https://github.com/aspnetboilerplate/aspnetboilerplate/releases)
 
 ### Module Zero
 
-* [Introduction](Zero/Overall.md)
+* [Introduction](Zero/Overall)
 -   Startup Templates
-    * [ASP.NET Core & Angular](Zero/Startup-Template-Angular.md)
-    * [ASP.NET Core MVC & jQuery](Zero/Startup-Template-Core.md)
-    * [ASP.NET MVC 5.x / AngularJS 1.x](Zero/Startup-Template.md)
+    * [ASP.NET Core & Angular](Zero/Startup-Template-Angular)
+    * [ASP.NET Core MVC & jQuery](Zero/Startup-Template-Core)
+    * [ASP.NET MVC 5.x / AngularJS 1.x](Zero/Startup-Template)
 -   Features
     * [Tenant Management](/Pages/Documents/Zero/Tenant-Management)
     * [Edition Management](/Pages/Documents/Zero/Edition-Management)
@@ -112,7 +112,7 @@ Releases
     * [Organization Unit Management](/Pages/Documents/Zero/Organization-Units)
     * [Permission Management](/Pages/Documents/Zero/Permission-Management)
     * [Language Management](/Pages/Documents/Zero/Language-Management)
-    * [Identity Server Integration](Zero/Identity-Server.md)
+    * [Identity Server Integration](Zero/Identity-Server)
 -   Releases
     * [Nuget Packages](/Pages/Documents/Zero/Nuget-Packages)
     * [Change Logs & Releases](https://github.com/aspnetboilerplate/module-zero/releases)

@@ -1,31 +1,18 @@
-### What is Dependency Injection?
+## 依赖注入
 
-If you already know the Dependency Injection, Constructor and
-Property Injection pattern concepts, you can skip to the [next
-section](#abpInfrastructure).
+### 什么是依赖注入
 
-Wikipedia says: "*Dependency injection is a software design pattern in
-which one or more dependencies (or services) are injected, or passed by
-reference, into a dependent object (or client) and are made part of the
-client's state. The pattern separates the creation of a client's
-dependencies from its own behavior, which allows program designs to be
-loosely coupled and to follow the dependency inversion and single
-responsibility principles. It directly contrasts the service locator
-pattern, which allows clients to know about the system they use to find
-dependencies.*".
+如果你已经知道依赖注入，构造函数和属性注入模式概念，你可以跳过这一节。
 
-It's very hard to manage dependencies and develop a modular and 
-well-structured application without using dependency injection techniques.
+维基百科说：“*依赖注入是一种软件设计模式，其中一个或多个依赖项（或服务）被注入或通过引用传递到依赖对象（或客户端），并成为客户端状态的一部分。该模式将客户端依赖关系的创建与其自身行为分开，这允许程序设计松散耦合并遵循依赖性反转和单一责任原则。它直接与服务定位器模式形成对比，后者允许客户端了解用于查找依赖关系的系统。*”
 
-#### Problems of the Traditional Way
+不使用依赖注入技术管理依赖，开发模块化且结构友好的应用是非常困难的。
 
-In an application, classes depend on each other. Assume that we have an
-[application service](/Pages/Documents/Application-Services) that uses a
-[repository](/Pages/Documents/Entities) to insert
-[entities](/Pages/Documents/Entities) into a database. In this situation,
-the application service class is dependent on the repository class. See
-the following example:
+#### 传统方式产生的问题
 
+应用中，类相互依赖。假设我们有一个[应用服务](/Application.Layer/Application-Services)使用了[仓储](/Domain.Layer/Repositories)向数据库插入[实体](/Domain.Layer/Entities)。此时应用服务类依赖于仓储类。举个例子：
+
+``` C#
     public class PersonAppService
     {
         private IPersonRepository _personRepository;
@@ -41,34 +28,18 @@ the following example:
             _personRepository.Insert(person);
         }
     }
-                
+```
 
-**PersonAppService** uses **PersonRepository** to insert a **Person** into
-the database. Although this looks harmless, there are some problems with this code:
+**PersonAppService**使用**PersonRepository**向数据库中插入一条**Person**数据。看起来没错，但是这些代码存在一些问题：
 
--   PersonAppService uses the **IPersonRepository** reference for the
-    **CreatePerson** method. This method depends on the 
-    IPersonRepository interface instead of the PersonRepository concrete class. 
-    In the constructor, however, the PersonAppService depends on the PersonRepository
-    rather than the interface. Components should depend on interfaces rather than concrete 
-    implementations. This is known as the Dependency Inversion principle.
--   If the PersonAppService creates the PersonRepository itself, it
-    becomes dependent on a specific implementation of the IPersonRepository
-    interface. This can not work with other implementations. Thus,
-    separating the interface from the implementation becomes meaningless.
-    Hard-dependencies make the code base tightly-coupled, making reusability negligent.
--   We may need to change the creation of PersonRepository in the future.
-    Say we want to make it a singleton (single shared instance rather
-    than creating an object for each use). Or we may want to create
-    more than one class that implements IPersonRepository and want to
-    create one of them conditionally. In this situation, we would have to
-    change all the classes that depend on IPersonRepository.
--   With such a dependency, it's very hard (or impossible) to unit test
-    the PersonAppService.
+* PersonAppService中的**CreatePerson**方法引用了**IPersonRepository**。该方法依赖于IPersonRepository接口，而不是具体的PersonRepository类。但在构造函数中，PersonAppService依赖于PersonRepository而不是接口。组件应该依赖于接口而不是具体的实现。这被称为依赖倒置原则。
+* 如果PersonAppService自己创建PersonRepository，它会变成依赖于IPersonRepository接口的一种特定实现。这将不适用于其他实现。此时分离接口与实现将变得毫无意义。硬依赖使代码紧密耦合，不利于代码重用。
+* 将来可能需要更改PersonRepository的创建。比如我们想让它成为单例（单个共享实例，而不是每次使用创建一个对象），或想创建多个类实现IPersonRepository，并根据条件创建其中的某个类。此时我们需要修改所有依赖于IPersonRepository的类。
+* 这种依赖很难（或不能）进行单元测试。
 
-To overcome some of these problems, the factory pattern can be used. Thus,
-the creation of the repository class is abstracted. See the code below:
+使用工厂模式可以解决部分问题。因此，仓储类是抽象创建的。如下：
 
+``` C#
     public class PersonAppService
     {
         private IPersonRepository _personRepository;
@@ -84,7 +55,9 @@ the creation of the repository class is abstracted. See the code below:
             _personRepository.Insert(person);
         }
     }
-                
+```
+PersonRepositoryFactory是一个静态类，创建并返回IPersonRepository。这就是**服务定位器**模式。这么做解决了创建的问题，因为PersonAppService
+
 
 PersonRepositoryFactory is a static class that creates and returns an
 IPersonRepository. This is known as the **Service Locator** pattern.

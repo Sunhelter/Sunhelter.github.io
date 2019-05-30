@@ -51,7 +51,7 @@
 
 #### 使用AbpAuthorize属性
 
-**AbpAuthorize**（MVC控制器中的**AbpMvcAuthorize**与Web API控制器中的**AbpApiAuthorize**）属性是最简单也是最常用的验证方式。比如下面的[应用服务](/Application.Layer/Application-Services.md)方法:
+**AbpAuthorize**（MVC控制器中的**AbpMvcAuthorize**与Web API控制器中的**AbpApiAuthorize**）属性是最简单也是最常用的验证方式。比如下面的[应用服务](/Application.Layer/Application-Services)方法:
 
 ``` C#
     [AbpAuthorize("Administration.UserManagement.CreateUser")]
@@ -63,7 +63,7 @@
 
 CreateUser方法不能被未被授予“Administration.UserManagement.CreateUser”权限的用户调用。
 
-AbpAuthorize属性还会验证当前用户是否登录（使用[IAbpSession.UserId](/Common.Structures/Abp-Session.md)）。如果我们为方法声明AbpAuthorize，它将只验证登录：
+AbpAuthorize属性还会验证当前用户是否登录（使用[IAbpSession.UserId](/Common.Structures/Abp-Session)）。如果我们为方法声明AbpAuthorize，它将只验证登录：
 
 ``` C#
     [AbpAuthorize]
