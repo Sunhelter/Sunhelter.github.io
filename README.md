@@ -2,4 +2,4 @@
 
 =============================
 
-Nothing here but you can try this：[https://docs.sunhelter.com](https://docs.sunhelter.com)
+Nothing here and you can close this page.
